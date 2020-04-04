@@ -178,6 +178,7 @@ function PessoaIncluirAlterarController(
                     vm.retornarTelaListagem();
                 });
         }
+        document.getElementById("fotoPerfil").src = '';
     };
 
     vm.remover = function (objeto, tipo) {

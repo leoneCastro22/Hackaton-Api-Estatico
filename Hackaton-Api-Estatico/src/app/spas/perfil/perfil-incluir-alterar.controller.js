@@ -37,23 +37,21 @@ function PerfilsIncluirAlterarController(
 
     /**METODOS DE INICIALIZACAO */
     vm.init = function () {
-
-        vm.tituloTela = "Cadastrar Perfis";
+        vm.tituloTela = "Cadastrar Perfil";
         vm.acao = "Cadastrar";
-         /**Recuperar a lista de perfil */
-         vm.listar(vm.urlPerfil).then(
+
+        vm.listar(vm.urlPerfil).then(
             function (response) {
                 if (response !== undefined) {
-                    vm.idPerfil = response;
-                    if ($routeParams.idPerfil) {
+                    vm.listaPerfil = response;
+                    vm.idPerfil = $routeParams;
+                    if (vm.idPerfil !== null) {
                         vm.tituloTela = "Editar Perfil";
                         vm.acao = "Editar";
 
-                        vm.recuperarObjetoPorIDURL($routeParams.idPerfil, vm.urlPerfil).then(
+                        vm.recuperarObjetoPorIDURL($routeParams, vm.urlPerfil).then(
                             function (perfilRetorno) {
                                 if (perfilRetorno !== undefined) {
-                                    perfilRetorno.nome = vm.perfil.nome;
-                                    perfilRetorno.descricao = vm.perfil.descricao;
                                     vm.perfil = perfilRetorno;
                                 }
                             }
@@ -79,22 +77,21 @@ function PerfilsIncluirAlterarController(
     };
 
     vm.incluir = function () {
-        
+
         vm.perfil.dataHoraInclusao = vm.DataJava();
         vm.perfil.dataHoraAlteracao = vm.DataJava();
+        
+
         var objetoDados = angular.copy(vm.perfil);
         console.log(objetoDados);
 
-        if (vm.acao == "Cadastrar") {
+        if (vm.acao === "Cadastrar") {
             vm.salvar(vm.urlPerfil, objetoDados).then(
                 function (perfilRetorno) {
                     alert("Perfil Cadastrado com sucesso!");
                     vm.retornarTelaListagem();
                 });
-        } else if (vm.acao == "Editar") {
-
-            vm.perfil.dataHoraAlteracao = vm.DataJava();
-
+        } else if (vm.acao === "Editar") {
             vm.alterar(vm.urlPerfil, objetoDados).then(
                 function (perfilRetorno) {
                     alert("Perfil Editado com sucesso!");
