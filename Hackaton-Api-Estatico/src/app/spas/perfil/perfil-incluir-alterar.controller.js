@@ -44,12 +44,11 @@ function PerfilsIncluirAlterarController(
             function (response) {
                 if (response !== undefined) {
                     vm.listaPerfil = response;
-                    vm.idPerfil = $routeParams;
-                    if (vm.idPerfil !== null) {
+                    if ($routeParams.idPerfis) {
                         vm.tituloTela = "Editar Perfil";
                         vm.acao = "Editar";
 
-                        vm.recuperarObjetoPorIDURL($routeParams, vm.urlPerfil).then(
+                        vm.recuperarObjetoPorIDURL($routeParams.idPerfis, vm.urlPerfil).then(
                             function (perfilRetorno) {
                                 if (perfilRetorno !== undefined) {
                                     vm.perfil = perfilRetorno;
@@ -94,7 +93,6 @@ function PerfilsIncluirAlterarController(
         } else if (vm.acao === "Editar") {
             vm.alterar(vm.urlPerfil, objetoDados).then(
                 function (perfilRetorno) {
-                    alert("Perfil Editado com sucesso!");
                     vm.retornarTelaListagem();
                 });
         }

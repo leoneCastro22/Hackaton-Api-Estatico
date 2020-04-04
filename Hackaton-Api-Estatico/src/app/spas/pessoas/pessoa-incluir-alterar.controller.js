@@ -74,24 +74,22 @@ function PessoaIncluirAlterarController(
 
         vm.tituloTela = "Cadastrar Pessoa";
         vm.acao = "Cadastrar";
-        vm.idPessoa = $routeParams.idPessoa;
         /**Recuperar a lista de perfil */
         vm.listar(vm.urlPerfil).then(
             function (response) {
                 if (response !== undefined) {
                     vm.listaPerfil = response;
-                    if (vm.idPessoa) {
+                    if ($routeParams.idPessoa) {
                         vm.tituloTela = "Editar Pessoa";
                         vm.acao = "Editar";
 
-                        vm.recuperarObjetoPorIDURL(vm.idPessoa, vm.urlPessoa).then(
+                        vm.recuperarObjetoPorIDURL($routeParams.idPessoa, vm.urlPessoa).then(
                             function (pessoaRetorno) {
                                 if (pessoaRetorno !== undefined) {
                                     vm.pessoa = pessoaRetorno;
-                                    
                                     vm.pessoa.dataNascimento = vm.formataDataTela(pessoaRetorno.dataNascimento);
-                                    vm.perfil = vm.pessoa.perfils;
-                                   
+                                    
+                                    vm.perfil = vm.pessoa.perfils[0];
                                 }
                             }
                         );
@@ -99,7 +97,7 @@ function PessoaIncluirAlterarController(
                 }
             }
         );
-    };
+    }; 
 
     /**METODOS DE TELA */
     vm.cancelar = function () {
@@ -136,6 +134,8 @@ function PessoaIncluirAlterarController(
 
     vm.incluir = function () {
         vm.pessoa.dataNascimento = vm.formataDataJava(vm.pessoa.dataNascimento);
+        vm.pessoa.perfils.push(vm.perfil);
+        
         
         if(vm.aux == true){
             vm.pessoa.fotoPerfil = document.getElementById("fotoPerfil").getAttribute("src");
@@ -143,6 +143,7 @@ function PessoaIncluirAlterarController(
 
         var objetoDados = angular.copy(vm.pessoa);
         var listaEndereco = [];
+        objetoDados.perfils = vm.pessoa.perfils;
         angular.forEach(objetoDados.enderecos, function (value, key) {
             if (value.complemento.length > 0) {
                 value.idPessoa = objetoDados.id;
@@ -161,7 +162,7 @@ function PessoaIncluirAlterarController(
                 }
             });
             if (vm.isNovoPerfil)
-                objetoDados.perfils = vm.perfil;
+                objetoDados.perfils.push(vm.pessoa.perfils);
         }
         if (vm.acao == "Cadastrar") {
 
@@ -275,6 +276,7 @@ function PessoaIncluirAlterarController(
         if (file) {
             vm.aux = true;
             reader.readAsDataURL(file);
+            console.log(file);
         } else {
             preview.src = "";
         }

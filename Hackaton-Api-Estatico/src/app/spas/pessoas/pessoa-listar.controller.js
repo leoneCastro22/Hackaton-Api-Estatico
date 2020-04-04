@@ -5,6 +5,7 @@ PessoaListarController.$inject = ["$rootScope", "$scope", "$location",
 function PessoaListarController($rootScope, $scope, $location,
     $q, $filter, $routeParams, HackatonStefaniniService) {
     vm = this;
+    vm.aux = false;
 
     vm.qdePorPagina = 5;
     vm.ultimoIndex = 0;
@@ -131,6 +132,25 @@ function PessoaListarController($rootScope, $scope, $location,
 
     vm.retornarTelaListagem = function () {
         $location.path("listarPessoas");
+    }
+
+    vm.carregaFoto = function () {
+
+        var preview = document.querySelectorAll('img').item(0);
+        var file = document.querySelector('input[type=file').files[0];
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            preview.src = reader.result;
+        };
+
+        if (file) {
+            vm.aux = true;
+            reader.readAsDataURL(file);
+            console.log(file);
+        } else {
+            preview.src = "";
+        }
     }
 
 }

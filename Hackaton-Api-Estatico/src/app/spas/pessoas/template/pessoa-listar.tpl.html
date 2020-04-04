@@ -35,7 +35,7 @@
       <tbody>
         <tr ng-repeat="pessoa in vm.listaPessoasMostrar">
           <td>{{pessoa.id}}</td>
-          <td><img src={{vm.pessoa.fotoPerfil}} style="width: 40; height: 43px;"/></td>
+          <td><img src="{{vm.pessoa.fotoPerfil.split(':')[0] == 'http'? vm.pessoa.fotoPerfil : '../../../app/imagens/fotoDefault.jpg' }}" style="width: 40; height: 43px;"/></td>
           <td>{{pessoa.nome}}</td>
           <td>{{pessoa.email}}</td>
           <td>
